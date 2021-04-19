@@ -1,0 +1,1209 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <style>
+        #map {
+            width: 1093px;
+            height: 972px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/DepartamentosUSAID_1.js"></script>
+        <script src="data/Municipios_recomendados_2.js"></script>
+        <script src="data/TasadeHomicidios_3.js"></script>
+        <script src="data/Gasto_educacion_municipal_4.js"></script>
+        <script src="data/Coberturabasicos_5.js"></script>
+        <script src="data/Cobertura_preprimaria_6.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:4
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        map.createPane('pane_OpenStreetMap_0');
+        map.getPane('pane_OpenStreetMap_0').style.zIndex = 400;
+        var layer_OpenStreetMap_0 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OpenStreetMap_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 4,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OpenStreetMap_0;
+        map.addLayer(layer_OpenStreetMap_0);
+        function pop_DepartamentosUSAID_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Municipio</th>\
+                        <td>' + (feature.properties['municipio'] !== null ? autolinker.link(feature.properties['municipio'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Departamento</th>\
+                        <td>' + (feature.properties['departamen'] !== null ? autolinker.link(feature.properties['departamen'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Deptos USA</th>\
+                        <td>' + (feature.properties['Deptos USA'] !== null ? autolinker.link(feature.properties['Deptos USA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_DepartamentosUSAID_1_0(feature) {
+            switch(String(feature.properties['Deptos USA'])) {
+                case '1':
+                    return {
+                pane: 'pane_DepartamentosUSAID_1',
+                opacity: 1,
+                color: 'rgba(102,51,24,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(179,90,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '0':
+                    return {
+                pane: 'pane_DepartamentosUSAID_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_DepartamentosUSAID_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(26,218,251,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_DepartamentosUSAID_1');
+        map.getPane('pane_DepartamentosUSAID_1').style.zIndex = 401;
+        map.getPane('pane_DepartamentosUSAID_1').style['mix-blend-mode'] = 'normal';
+        var layer_DepartamentosUSAID_1 = new L.geoJson(json_DepartamentosUSAID_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_DepartamentosUSAID_1',
+            layerName: 'layer_DepartamentosUSAID_1',
+            pane: 'pane_DepartamentosUSAID_1',
+            onEachFeature: pop_DepartamentosUSAID_1,
+            style: style_DepartamentosUSAID_1_0,
+        });
+        bounds_group.addLayer(layer_DepartamentosUSAID_1);
+        map.addLayer(layer_DepartamentosUSAID_1);
+        function pop_Municipios_recomendados_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Municipio</th>\
+                        <td>' + (feature.properties['municipio'] !== null ? autolinker.link(feature.properties['municipio'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Departamento</th>\
+                        <td>' + (feature.properties['departamen'] !== null ? autolinker.link(feature.properties['departamen'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Municipios Recomendados</th>\
+                        <td>' + (feature.properties['Municipios'] !== null ? autolinker.link(feature.properties['Municipios'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Municipios_recomendados_2_0(feature) {
+            switch(String(feature.properties['Municipios'])) {
+                case '0':
+                    return {
+                pane: 'pane_Municipios_recomendados_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1':
+                    return {
+                pane: 'pane_Municipios_recomendados_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,27,224,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Municipios_recomendados_2');
+        map.getPane('pane_Municipios_recomendados_2').style.zIndex = 402;
+        map.getPane('pane_Municipios_recomendados_2').style['mix-blend-mode'] = 'normal';
+        var layer_Municipios_recomendados_2 = new L.geoJson(json_Municipios_recomendados_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Municipios_recomendados_2',
+            layerName: 'layer_Municipios_recomendados_2',
+            pane: 'pane_Municipios_recomendados_2',
+            onEachFeature: pop_Municipios_recomendados_2,
+            style: style_Municipios_recomendados_2_0,
+        });
+        bounds_group.addLayer(layer_Municipios_recomendados_2);
+        map.addLayer(layer_Municipios_recomendados_2);
+        function pop_TasadeHomicidios_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Municipio</th>\
+                        <td>' + (feature.properties['municipio'] !== null ? autolinker.link(feature.properties['municipio'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Departamento</th>\
+                        <td>' + (feature.properties['departamen'] !== null ? autolinker.link(feature.properties['departamen'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Tasa de Homicidios</th>\
+                        <td>' + (feature.properties['Tasa de ho'] !== null ? autolinker.link(feature.properties['Tasa de ho'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_TasadeHomicidios_3_0(feature) {
+            if (feature.properties['Tasa de ho'] >= 0.000000 && feature.properties['Tasa de ho'] <= 6.140000 ) {
+                return {
+                pane: 'pane_TasadeHomicidios_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Tasa de ho'] >= 6.140000 && feature.properties['Tasa de ho'] <= 18.430000 ) {
+                return {
+                pane: 'pane_TasadeHomicidios_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,191,191,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Tasa de ho'] >= 18.430000 && feature.properties['Tasa de ho'] <= 34.650000 ) {
+                return {
+                pane: 'pane_TasadeHomicidios_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,128,128,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Tasa de ho'] >= 34.650000 && feature.properties['Tasa de ho'] <= 59.990000 ) {
+                return {
+                pane: 'pane_TasadeHomicidios_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,64,64,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Tasa de ho'] >= 59.990000 && feature.properties['Tasa de ho'] <= 104.520000 ) {
+                return {
+                pane: 'pane_TasadeHomicidios_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,0,0,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_TasadeHomicidios_3');
+        map.getPane('pane_TasadeHomicidios_3').style.zIndex = 403;
+        map.getPane('pane_TasadeHomicidios_3').style['mix-blend-mode'] = 'normal';
+        var layer_TasadeHomicidios_3 = new L.geoJson(json_TasadeHomicidios_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_TasadeHomicidios_3',
+            layerName: 'layer_TasadeHomicidios_3',
+            pane: 'pane_TasadeHomicidios_3',
+            onEachFeature: pop_TasadeHomicidios_3,
+            style: style_TasadeHomicidios_3_0,
+        });
+        bounds_group.addLayer(layer_TasadeHomicidios_3);
+        map.addLayer(layer_TasadeHomicidios_3);
+        function pop_Gasto_educacion_municipal_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Municipio</th>\
+                        <td>' + (feature.properties['municipio'] !== null ? autolinker.link(feature.properties['municipio'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Departamento</th>\
+                        <td>' + (feature.properties['departamen'] !== null ? autolinker.link(feature.properties['departamen'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Gasto en educacion municipal</th>\
+                        <td>' + (feature.properties['gasto_educ'] !== null ? autolinker.link(feature.properties['gasto_educ'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Gasto Total Municipal</th>\
+                        <td>' + (feature.properties['total'] !== null ? autolinker.link(feature.properties['total'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">percent_ed</th>\
+                        <td>' + (feature.properties['percent_ed'] !== null ? autolinker.link(feature.properties['percent_ed'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Porcentaje de gasto en educación</th>\
+                        <td>' + (feature.properties['demanda'] !== null ? autolinker.link(feature.properties['demanda'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Gasto_educacion_municipal_4_0(feature) {
+            if (feature.properties['percent_ed'] >= 0.000000 && feature.properties['percent_ed'] <= 0.033400 ) {
+                return {
+                pane: 'pane_Gasto_educacion_municipal_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(247,252,245,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['percent_ed'] >= 0.033400 && feature.properties['percent_ed'] <= 0.062000 ) {
+                return {
+                pane: 'pane_Gasto_educacion_municipal_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(202,234,195,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['percent_ed'] >= 0.062000 && feature.properties['percent_ed'] <= 0.093000 ) {
+                return {
+                pane: 'pane_Gasto_educacion_municipal_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(123,200,124,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['percent_ed'] >= 0.093000 && feature.properties['percent_ed'] <= 0.157600 ) {
+                return {
+                pane: 'pane_Gasto_educacion_municipal_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(42,146,74,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['percent_ed'] >= 0.157600 && feature.properties['percent_ed'] <= 0.441000 ) {
+                return {
+                pane: 'pane_Gasto_educacion_municipal_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,68,27,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Gasto_educacion_municipal_4');
+        map.getPane('pane_Gasto_educacion_municipal_4').style.zIndex = 404;
+        map.getPane('pane_Gasto_educacion_municipal_4').style['mix-blend-mode'] = 'normal';
+        var layer_Gasto_educacion_municipal_4 = new L.geoJson(json_Gasto_educacion_municipal_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Gasto_educacion_municipal_4',
+            layerName: 'layer_Gasto_educacion_municipal_4',
+            pane: 'pane_Gasto_educacion_municipal_4',
+            onEachFeature: pop_Gasto_educacion_municipal_4,
+            style: style_Gasto_educacion_municipal_4_0,
+        });
+        bounds_group.addLayer(layer_Gasto_educacion_municipal_4);
+        map.addLayer(layer_Gasto_educacion_municipal_4);
+        function pop_Coberturabasicos_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Municipio</th>\
+                        <td>' + (feature.properties['municipio'] !== null ? autolinker.link(feature.properties['municipio'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Departamento</th>\
+                        <td>' + (feature.properties['departamen'] !== null ? autolinker.link(feature.properties['departamen'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">tnetbas</th>\
+                        <td>' + (feature.properties['tnetbas'] !== null ? autolinker.link(feature.properties['tnetbas'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Coberturabasicos_5_0(feature) {
+            if (feature.properties['tnetbas'] >= 0.000000 && feature.properties['tnetbas'] <= 0.390000 ) {
+                return {
+                pane: 'pane_Coberturabasicos_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(247,251,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['tnetbas'] >= 0.390000 && feature.properties['tnetbas'] <= 0.540000 ) {
+                return {
+                pane: 'pane_Coberturabasicos_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(200,221,240,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['tnetbas'] >= 0.540000 && feature.properties['tnetbas'] <= 0.670000 ) {
+                return {
+                pane: 'pane_Coberturabasicos_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(115,179,216,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['tnetbas'] >= 0.670000 && feature.properties['tnetbas'] <= 0.800000 ) {
+                return {
+                pane: 'pane_Coberturabasicos_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(40,121,185,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['tnetbas'] >= 0.800000 && feature.properties['tnetbas'] <= 1.230000 ) {
+                return {
+                pane: 'pane_Coberturabasicos_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(8,48,107,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Coberturabasicos_5');
+        map.getPane('pane_Coberturabasicos_5').style.zIndex = 405;
+        map.getPane('pane_Coberturabasicos_5').style['mix-blend-mode'] = 'normal';
+        var layer_Coberturabasicos_5 = new L.geoJson(json_Coberturabasicos_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Coberturabasicos_5',
+            layerName: 'layer_Coberturabasicos_5',
+            pane: 'pane_Coberturabasicos_5',
+            onEachFeature: pop_Coberturabasicos_5,
+            style: style_Coberturabasicos_5_0,
+        });
+        bounds_group.addLayer(layer_Coberturabasicos_5);
+        map.addLayer(layer_Coberturabasicos_5);
+        function pop_Cobertura_preprimaria_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Municipio</th>\
+                        <td>' + (feature.properties['municipio'] !== null ? autolinker.link(feature.properties['municipio'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Departamento</th>\
+                        <td>' + (feature.properties['departamen'] !== null ? autolinker.link(feature.properties['departamen'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">tnetprepri</th>\
+                        <td>' + (feature.properties['tnetprepri'] !== null ? autolinker.link(feature.properties['tnetprepri'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Cobertura_preprimaria_6_0(feature) {
+            if (feature.properties['tnetprepri'] >= 0.160000 && feature.properties['tnetprepri'] <= 0.390000 ) {
+                return {
+                pane: 'pane_Cobertura_preprimaria_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(237,248,251,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['tnetprepri'] >= 0.390000 && feature.properties['tnetprepri'] <= 0.540000 ) {
+                return {
+                pane: 'pane_Cobertura_preprimaria_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(179,205,227,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['tnetprepri'] >= 0.540000 && feature.properties['tnetprepri'] <= 0.670000 ) {
+                return {
+                pane: 'pane_Cobertura_preprimaria_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(140,150,198,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['tnetprepri'] >= 0.670000 && feature.properties['tnetprepri'] <= 0.800000 ) {
+                return {
+                pane: 'pane_Cobertura_preprimaria_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(136,86,167,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['tnetprepri'] >= 0.800000 && feature.properties['tnetprepri'] <= 1.030000 ) {
+                return {
+                pane: 'pane_Cobertura_preprimaria_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(129,15,124,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Cobertura_preprimaria_6');
+        map.getPane('pane_Cobertura_preprimaria_6').style.zIndex = 406;
+        map.getPane('pane_Cobertura_preprimaria_6').style['mix-blend-mode'] = 'normal';
+        var layer_Cobertura_preprimaria_6 = new L.geoJson(json_Cobertura_preprimaria_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Cobertura_preprimaria_6',
+            layerName: 'layer_Cobertura_preprimaria_6',
+            pane: 'pane_Cobertura_preprimaria_6',
+            onEachFeature: pop_Cobertura_preprimaria_6,
+            style: style_Cobertura_preprimaria_6_0,
+        });
+        bounds_group.addLayer(layer_Cobertura_preprimaria_6);
+        map.addLayer(layer_Cobertura_preprimaria_6);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Cobertura_preprimaria<br /><table><tr><td style="text-align: center;"><img src="legend/Cobertura_preprimaria_6_0160390.png" /></td><td>0.16 - 0.39</td></tr><tr><td style="text-align: center;"><img src="legend/Cobertura_preprimaria_6_0390541.png" /></td><td>0.39 - 0.54</td></tr><tr><td style="text-align: center;"><img src="legend/Cobertura_preprimaria_6_0540672.png" /></td><td>0.54 - 0.67</td></tr><tr><td style="text-align: center;"><img src="legend/Cobertura_preprimaria_6_067083.png" /></td><td>0.67 - 0.8</td></tr><tr><td style="text-align: center;"><img src="legend/Cobertura_preprimaria_6_081034.png" /></td><td>0.8 - 1.03</td></tr></table>': layer_Cobertura_preprimaria_6,'Cobertura basicos<br /><table><tr><td style="text-align: center;"><img src="legend/Coberturabasicos_5_00390.png" /></td><td>0 - 0.39</td></tr><tr><td style="text-align: center;"><img src="legend/Coberturabasicos_5_0390541.png" /></td><td>0.39 - 0.54</td></tr><tr><td style="text-align: center;"><img src="legend/Coberturabasicos_5_0540672.png" /></td><td>0.54 - 0.67</td></tr><tr><td style="text-align: center;"><img src="legend/Coberturabasicos_5_067083.png" /></td><td>0.67 - 0.8</td></tr><tr><td style="text-align: center;"><img src="legend/Coberturabasicos_5_081234.png" /></td><td>0.8 - 1.23</td></tr></table>': layer_Coberturabasicos_5,'Gasto_educacion_municipal<br /><table><tr><td style="text-align: center;"><img src="legend/Gasto_educacion_municipal_4_000330.png" /></td><td>0 - 0.033</td></tr><tr><td style="text-align: center;"><img src="legend/Gasto_educacion_municipal_4_003300621.png" /></td><td>0.033 - 0.062</td></tr><tr><td style="text-align: center;"><img src="legend/Gasto_educacion_municipal_4_006200932.png" /></td><td>0.062 - 0.093</td></tr><tr><td style="text-align: center;"><img src="legend/Gasto_educacion_municipal_4_009301583.png" /></td><td>0.093 - 0.158</td></tr><tr><td style="text-align: center;"><img src="legend/Gasto_educacion_municipal_4_015804414.png" /></td><td>0.158 - 0.441</td></tr></table>': layer_Gasto_educacion_municipal_4,'Tasa de Homicidios<br /><table><tr><td style="text-align: center;"><img src="legend/TasadeHomicidios_3_0610.png" /></td><td>0 - 6.1</td></tr><tr><td style="text-align: center;"><img src="legend/TasadeHomicidios_3_611841.png" /></td><td>6.1 - 18.4</td></tr><tr><td style="text-align: center;"><img src="legend/TasadeHomicidios_3_1843462.png" /></td><td>18.4 - 34.6</td></tr><tr><td style="text-align: center;"><img src="legend/TasadeHomicidios_3_346603.png" /></td><td>34.6 - 60</td></tr><tr><td style="text-align: center;"><img src="legend/TasadeHomicidios_3_6010454.png" /></td><td>60 - 104.5</td></tr></table>': layer_TasadeHomicidios_3,'Municipios_recomendados<br /><table><tr><td style="text-align: center;"><img src="legend/Municipios_recomendados_2_00.png" /></td><td>0</td></tr><tr><td style="text-align: center;"><img src="legend/Municipios_recomendados_2_11.png" /></td><td>1</td></tr></table>': layer_Municipios_recomendados_2,'Departamentos USAID<br /><table><tr><td style="text-align: center;"><img src="legend/DepartamentosUSAID_1_10.png" /></td><td>1</td></tr><tr><td style="text-align: center;"><img src="legend/DepartamentosUSAID_1_01.png" /></td><td>0</td></tr><tr><td style="text-align: center;"><img src="legend/DepartamentosUSAID_1_2.png" /></td><td></td></tr></table>': layer_DepartamentosUSAID_1,"OpenStreetMap": layer_OpenStreetMap_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"departamen": "str","municipio": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_departamen = document.createElement('div');
+            div_departamen.id = "div_departamen";
+            div_departamen.className= "filterselect";
+            document.getElementById("menu").appendChild(div_departamen);
+            sel_departamen = document.createElement('select');
+            sel_departamen.multiple = true;
+            sel_departamen.size = 10;
+            sel_departamen.id = "sel_departamen";
+            var departamen_options_str = "<option value='' unselected></option>";
+            sel_departamen.onchange = function(){filterFunc()};
+            departamen_options_str  += '<option value="Alta Verapaz">Alta Verapaz</option>';
+            departamen_options_str  += '<option value="Baja Verapaz">Baja Verapaz</option>';
+            departamen_options_str  += '<option value="Chimaltenango">Chimaltenango</option>';
+            departamen_options_str  += '<option value="Chiquimula">Chiquimula</option>';
+            departamen_options_str  += '<option value="El Progreso">El Progreso</option>';
+            departamen_options_str  += '<option value="Escuintla">Escuintla</option>';
+            departamen_options_str  += '<option value="Guatemala">Guatemala</option>';
+            departamen_options_str  += '<option value="Huehuetenango">Huehuetenango</option>';
+            departamen_options_str  += '<option value="Izabal">Izabal</option>';
+            departamen_options_str  += '<option value="Jalapa">Jalapa</option>';
+            departamen_options_str  += '<option value="Jutiapa">Jutiapa</option>';
+            departamen_options_str  += '<option value="Petén">Petén</option>';
+            departamen_options_str  += '<option value="Quetzaltenango">Quetzaltenango</option>';
+            departamen_options_str  += '<option value="Quiché">Quiché</option>';
+            departamen_options_str  += '<option value="Retalhuleu">Retalhuleu</option>';
+            departamen_options_str  += '<option value="Sacatepéquez">Sacatepéquez</option>';
+            departamen_options_str  += '<option value="San Marcos">San Marcos</option>';
+            departamen_options_str  += '<option value="Santa Rosa">Santa Rosa</option>';
+            departamen_options_str  += '<option value="Sololá">Sololá</option>';
+            departamen_options_str  += '<option value="Suchitepéquez">Suchitepéquez</option>';
+            departamen_options_str  += '<option value="Totonicapán">Totonicapán</option>';
+            departamen_options_str  += '<option value="Zacapa">Zacapa</option>';
+            sel_departamen.innerHTML = departamen_options_str;
+            div_departamen.appendChild(sel_departamen);
+            var lab_departamen = document.createElement('div');
+            lab_departamen.innerHTML = 'departamen';
+            lab_departamen.className = 'filterlabel';
+            div_departamen.appendChild(lab_departamen);
+            var reset_departamen = document.createElement('div');
+            reset_departamen.innerHTML = 'clear filter';
+            reset_departamen.className = 'filterlabel';
+            reset_departamen.onclick = function() {
+                var options = document.getElementById("sel_departamen").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_departamen.appendChild(reset_departamen);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_municipio = document.createElement('div');
+            div_municipio.id = "div_municipio";
+            div_municipio.className= "filterselect";
+            document.getElementById("menu").appendChild(div_municipio);
+            sel_municipio = document.createElement('select');
+            sel_municipio.multiple = true;
+            sel_municipio.size = 10;
+            sel_municipio.id = "sel_municipio";
+            var municipio_options_str = "<option value='' unselected></option>";
+            sel_municipio.onchange = function(){filterFunc()};
+            municipio_options_str  += '<option value="Acatenango">Acatenango</option>';
+            municipio_options_str  += '<option value="Agua Blanca">Agua Blanca</option>';
+            municipio_options_str  += '<option value="Aguacatán">Aguacatán</option>';
+            municipio_options_str  += '<option value="Almolonga">Almolonga</option>';
+            municipio_options_str  += '<option value="Alotenango">Alotenango</option>';
+            municipio_options_str  += '<option value="Amatitlán">Amatitlán</option>';
+            municipio_options_str  += '<option value="Antigua Guatemala">Antigua Guatemala</option>';
+            municipio_options_str  += '<option value="Asunción Mita">Asunción Mita</option>';
+            municipio_options_str  += '<option value="Atescatempa">Atescatempa</option>';
+            municipio_options_str  += '<option value="Ayutla">Ayutla</option>';
+            municipio_options_str  += '<option value="Barberena">Barberena</option>';
+            municipio_options_str  += '<option value="Barillas">Barillas</option>';
+            municipio_options_str  += '<option value="Cabañas">Cabañas</option>';
+            municipio_options_str  += '<option value="Cabricán">Cabricán</option>';
+            municipio_options_str  += '<option value="Cahabón">Cahabón</option>';
+            municipio_options_str  += '<option value="Cajolá">Cajolá</option>';
+            municipio_options_str  += '<option value="Camotán">Camotán</option>';
+            municipio_options_str  += '<option value="Canillá">Canillá</option>';
+            municipio_options_str  += '<option value="Cantel">Cantel</option>';
+            municipio_options_str  += '<option value="Casillas">Casillas</option>';
+            municipio_options_str  += '<option value="Catarina">Catarina</option>';
+            municipio_options_str  += '<option value="Chahal">Chahal</option>';
+            municipio_options_str  += '<option value="Chajul">Chajul</option>';
+            municipio_options_str  += '<option value="Champerico">Champerico</option>';
+            municipio_options_str  += '<option value="Chiantla">Chiantla</option>';
+            municipio_options_str  += '<option value="Chicacao">Chicacao</option>';
+            municipio_options_str  += '<option value="Chicamán">Chicamán</option>';
+            municipio_options_str  += '<option value="Chichicastenango">Chichicastenango</option>';
+            municipio_options_str  += '<option value="Chiché">Chiché</option>';
+            municipio_options_str  += '<option value="Chimaltenango">Chimaltenango</option>';
+            municipio_options_str  += '<option value="Chinautla">Chinautla</option>';
+            municipio_options_str  += '<option value="Chinique">Chinique</option>';
+            municipio_options_str  += '<option value="Chiquimula">Chiquimula</option>';
+            municipio_options_str  += '<option value="Chiquimulilla">Chiquimulilla</option>';
+            municipio_options_str  += '<option value="Chisec">Chisec</option>';
+            municipio_options_str  += '<option value="Chuarrancho">Chuarrancho</option>';
+            municipio_options_str  += '<option value="Ciudad Vieja">Ciudad Vieja</option>';
+            municipio_options_str  += '<option value="Coatepeque">Coatepeque</option>';
+            municipio_options_str  += '<option value="Cobán">Cobán</option>';
+            municipio_options_str  += '<option value="Colomba">Colomba</option>';
+            municipio_options_str  += '<option value="Colotenango">Colotenango</option>';
+            municipio_options_str  += '<option value="Comalapa">Comalapa</option>';
+            municipio_options_str  += '<option value="Comapa">Comapa</option>';
+            municipio_options_str  += '<option value="Comitancillo">Comitancillo</option>';
+            municipio_options_str  += '<option value="Concepción">Concepción</option>';
+            municipio_options_str  += '<option value="Concepción Chiquirichapa">Concepción Chiquirichapa</option>';
+            municipio_options_str  += '<option value="Concepción Huista">Concepción Huista</option>';
+            municipio_options_str  += '<option value="Concepción Las Minas">Concepción Las Minas</option>';
+            municipio_options_str  += '<option value="Concepción Tutuapa">Concepción Tutuapa</option>';
+            municipio_options_str  += '<option value="Conguaco">Conguaco</option>';
+            municipio_options_str  += '<option value="Cubulco">Cubulco</option>';
+            municipio_options_str  += '<option value="Cuilapa">Cuilapa</option>';
+            municipio_options_str  += '<option value="Cuilco">Cuilco</option>';
+            municipio_options_str  += '<option value="Cunén">Cunén</option>';
+            municipio_options_str  += '<option value="Cuyotenango">Cuyotenango</option>';
+            municipio_options_str  += '<option value="Dolores">Dolores</option>';
+            municipio_options_str  += '<option value="El Adelanto">El Adelanto</option>';
+            municipio_options_str  += '<option value="El Asintal">El Asintal</option>';
+            municipio_options_str  += '<option value="El Chal">El Chal</option>';
+            municipio_options_str  += '<option value="El Chol">El Chol</option>';
+            municipio_options_str  += '<option value="El Estor">El Estor</option>';
+            municipio_options_str  += '<option value="El Jícaro">El Jícaro</option>';
+            municipio_options_str  += '<option value="El Palmar">El Palmar</option>';
+            municipio_options_str  += '<option value="El Progreso">El Progreso</option>';
+            municipio_options_str  += '<option value="El Quetzal">El Quetzal</option>';
+            municipio_options_str  += '<option value="El Rodeo">El Rodeo</option>';
+            municipio_options_str  += '<option value="El Tejar">El Tejar</option>';
+            municipio_options_str  += '<option value="El Tumbador">El Tumbador</option>';
+            municipio_options_str  += '<option value="Escuintla">Escuintla</option>';
+            municipio_options_str  += '<option value="Esquipulas">Esquipulas</option>';
+            municipio_options_str  += '<option value="Esquipulas Palo Gordo">Esquipulas Palo Gordo</option>';
+            municipio_options_str  += '<option value="Estanzuela">Estanzuela</option>';
+            municipio_options_str  += '<option value="Flores">Flores</option>';
+            municipio_options_str  += '<option value="Flores Costa Cuca">Flores Costa Cuca</option>';
+            municipio_options_str  += '<option value="Fraijanes">Fraijanes</option>';
+            municipio_options_str  += '<option value="Fray Bartolomé de las Casas">Fray Bartolomé de las Casas</option>';
+            municipio_options_str  += '<option value="Granados">Granados</option>';
+            municipio_options_str  += '<option value="Gualán">Gualán</option>';
+            municipio_options_str  += '<option value="Guanagazapa">Guanagazapa</option>';
+            municipio_options_str  += '<option value="Guastatoya">Guastatoya</option>';
+            municipio_options_str  += '<option value="Guatemala">Guatemala</option>';
+            municipio_options_str  += '<option value="Guazacapán">Guazacapán</option>';
+            municipio_options_str  += '<option value="Génova">Génova</option>';
+            municipio_options_str  += '<option value="Huehuetenango">Huehuetenango</option>';
+            municipio_options_str  += '<option value="Huitán">Huitán</option>';
+            municipio_options_str  += '<option value="Huité">Huité</option>';
+            municipio_options_str  += '<option value="Ipala">Ipala</option>';
+            municipio_options_str  += '<option value="Ixchiguán">Ixchiguán</option>';
+            municipio_options_str  += '<option value="Ixcán">Ixcán</option>';
+            municipio_options_str  += '<option value="Iztapa">Iztapa</option>';
+            municipio_options_str  += '<option value="Jacaltenango">Jacaltenango</option>';
+            municipio_options_str  += '<option value="Jalapa">Jalapa</option>';
+            municipio_options_str  += '<option value="Jalpatagua">Jalpatagua</option>';
+            municipio_options_str  += '<option value="Jerez">Jerez</option>';
+            municipio_options_str  += '<option value="Jocotenango">Jocotenango</option>';
+            municipio_options_str  += '<option value="Jocotán">Jocotán</option>';
+            municipio_options_str  += '<option value="Joyabaj">Joyabaj</option>';
+            municipio_options_str  += '<option value="Jutiapa">Jutiapa</option>';
+            municipio_options_str  += '<option value="La Blanca">La Blanca</option>';
+            municipio_options_str  += '<option value="La Democracia">La Democracia</option>';
+            municipio_options_str  += '<option value="La Esperanza">La Esperanza</option>';
+            municipio_options_str  += '<option value="La Gomera">La Gomera</option>';
+            municipio_options_str  += '<option value="La Libertad">La Libertad</option>';
+            municipio_options_str  += '<option value="La Máquina">La Máquina</option>';
+            municipio_options_str  += '<option value="La Reforma">La Reforma</option>';
+            municipio_options_str  += '<option value="La Unión">La Unión</option>';
+            municipio_options_str  += '<option value="Lanquín">Lanquín</option>';
+            municipio_options_str  += '<option value="Las Cruces">Las Cruces</option>';
+            municipio_options_str  += '<option value="Livingston">Livingston</option>';
+            municipio_options_str  += '<option value="Los Amates">Los Amates</option>';
+            municipio_options_str  += '<option value="Magdalena Milpas Altas">Magdalena Milpas Altas</option>';
+            municipio_options_str  += '<option value="Malacatancito">Malacatancito</option>';
+            municipio_options_str  += '<option value="Malacatán">Malacatán</option>';
+            municipio_options_str  += '<option value="Masagua">Masagua</option>';
+            municipio_options_str  += '<option value="Mataquescuintla">Mataquescuintla</option>';
+            municipio_options_str  += '<option value="Mazatenango">Mazatenango</option>';
+            municipio_options_str  += '<option value="Melchor de Mencos">Melchor de Mencos</option>';
+            municipio_options_str  += '<option value="Mixco">Mixco</option>';
+            municipio_options_str  += '<option value="Momostenango">Momostenango</option>';
+            municipio_options_str  += '<option value="Monjas">Monjas</option>';
+            municipio_options_str  += '<option value="Morales">Morales</option>';
+            municipio_options_str  += '<option value="Morazán">Morazán</option>';
+            municipio_options_str  += '<option value="Moyuta">Moyuta</option>';
+            municipio_options_str  += '<option value="Nahualá">Nahualá</option>';
+            municipio_options_str  += '<option value="Nebaj">Nebaj</option>';
+            municipio_options_str  += '<option value="Nentón">Nentón</option>';
+            municipio_options_str  += '<option value="Nueva Concepción">Nueva Concepción</option>';
+            municipio_options_str  += '<option value="Nueva Santa Rosa">Nueva Santa Rosa</option>';
+            municipio_options_str  += '<option value="Nuevo Progreso">Nuevo Progreso</option>';
+            municipio_options_str  += '<option value="Nuevo San Carlos">Nuevo San Carlos</option>';
+            municipio_options_str  += '<option value="Ocós">Ocós</option>';
+            municipio_options_str  += '<option value="Olintepeque">Olintepeque</option>';
+            municipio_options_str  += '<option value="Olopa">Olopa</option>';
+            municipio_options_str  += '<option value="Oratorio">Oratorio</option>';
+            municipio_options_str  += '<option value="Pachalum">Pachalum</option>';
+            municipio_options_str  += '<option value="Pajapita">Pajapita</option>';
+            municipio_options_str  += '<option value="Palencia">Palencia</option>';
+            municipio_options_str  += '<option value="Palestina de los Altos">Palestina de los Altos</option>';
+            municipio_options_str  += '<option value="Palín">Palín</option>';
+            municipio_options_str  += '<option value="Panajachel">Panajachel</option>';
+            municipio_options_str  += '<option value="Panzós">Panzós</option>';
+            municipio_options_str  += '<option value="Parramos">Parramos</option>';
+            municipio_options_str  += '<option value="Pasaco">Pasaco</option>';
+            municipio_options_str  += '<option value="Pastores">Pastores</option>';
+            municipio_options_str  += '<option value="Patulul">Patulul</option>';
+            municipio_options_str  += '<option value="Patzicía">Patzicía</option>';
+            municipio_options_str  += '<option value="Patzité">Patzité</option>';
+            municipio_options_str  += '<option value="Patzún">Patzún</option>';
+            municipio_options_str  += '<option value="Petapa">Petapa</option>';
+            municipio_options_str  += '<option value="Petatán">Petatán</option>';
+            municipio_options_str  += '<option value="Pochuta">Pochuta</option>';
+            municipio_options_str  += '<option value="Poptún">Poptún</option>';
+            municipio_options_str  += '<option value="Pueblo Nuevo">Pueblo Nuevo</option>';
+            municipio_options_str  += '<option value="Pueblo Nuevo Viñas">Pueblo Nuevo Viñas</option>';
+            municipio_options_str  += '<option value="Puerto Barrios">Puerto Barrios</option>';
+            municipio_options_str  += '<option value="Purulhá">Purulhá</option>';
+            municipio_options_str  += '<option value="Quesada">Quesada</option>';
+            municipio_options_str  += '<option value="Quetzaltenango">Quetzaltenango</option>';
+            municipio_options_str  += '<option value="Quezaltepeque">Quezaltepeque</option>';
+            municipio_options_str  += '<option value="Rabinal">Rabinal</option>';
+            municipio_options_str  += '<option value="Raxruhá">Raxruhá</option>';
+            municipio_options_str  += '<option value="Retalhuleu">Retalhuleu</option>';
+            municipio_options_str  += '<option value="Río Blanco">Río Blanco</option>';
+            municipio_options_str  += '<option value="Río Bravo">Río Bravo</option>';
+            municipio_options_str  += '<option value="Río Hondo">Río Hondo</option>';
+            municipio_options_str  += '<option value="Sacapulas">Sacapulas</option>';
+            municipio_options_str  += '<option value="Salamá">Salamá</option>';
+            municipio_options_str  += '<option value="Salcajá">Salcajá</option>';
+            municipio_options_str  += '<option value="Samayac">Samayac</option>';
+            municipio_options_str  += '<option value="San Agustín Acasaguastlán">San Agustín Acasaguastlán</option>';
+            municipio_options_str  += '<option value="San Andrés">San Andrés</option>';
+            municipio_options_str  += '<option value="San Andrés Itzapa">San Andrés Itzapa</option>';
+            municipio_options_str  += '<option value="San Andrés Sajcabajá">San Andrés Sajcabajá</option>';
+            municipio_options_str  += '<option value="San Andrés Semetabaj">San Andrés Semetabaj</option>';
+            municipio_options_str  += '<option value="San Andrés Villa Seca">San Andrés Villa Seca</option>';
+            municipio_options_str  += '<option value="San Andrés Xecul">San Andrés Xecul</option>';
+            municipio_options_str  += '<option value="San Antonio Aguas Calientes">San Antonio Aguas Calientes</option>';
+            municipio_options_str  += '<option value="San Antonio Huista">San Antonio Huista</option>';
+            municipio_options_str  += '<option value="San Antonio Ilotenango">San Antonio Ilotenango</option>';
+            municipio_options_str  += '<option value="San Antonio La Paz">San Antonio La Paz</option>';
+            municipio_options_str  += '<option value="San Antonio Palopó">San Antonio Palopó</option>';
+            municipio_options_str  += '<option value="San Antonio Sacatepéquez">San Antonio Sacatepéquez</option>';
+            municipio_options_str  += '<option value="San Antonio Suchitepéquez">San Antonio Suchitepéquez</option>';
+            municipio_options_str  += '<option value="San Bartolo Aguas Calientes">San Bartolo Aguas Calientes</option>';
+            municipio_options_str  += '<option value="San Bartolomé Jocotenango">San Bartolomé Jocotenango</option>';
+            municipio_options_str  += '<option value="San Bartolomé Milpas Altas">San Bartolomé Milpas Altas</option>';
+            municipio_options_str  += '<option value="San Benito">San Benito</option>';
+            municipio_options_str  += '<option value="San Bernardino">San Bernardino</option>';
+            municipio_options_str  += '<option value="San Carlos Alzatate">San Carlos Alzatate</option>';
+            municipio_options_str  += '<option value="San Carlos Sija">San Carlos Sija</option>';
+            municipio_options_str  += '<option value="San Cristóbal Acasaguastlán">San Cristóbal Acasaguastlán</option>';
+            municipio_options_str  += '<option value="San Cristóbal Cucho">San Cristóbal Cucho</option>';
+            municipio_options_str  += '<option value="San Cristóbal Totonicapán">San Cristóbal Totonicapán</option>';
+            municipio_options_str  += '<option value="San Cristóbal Verapaz">San Cristóbal Verapaz</option>';
+            municipio_options_str  += '<option value="San Diego">San Diego</option>';
+            municipio_options_str  += '<option value="San Felipe Retalhuleu">San Felipe Retalhuleu</option>';
+            municipio_options_str  += '<option value="San Francisco">San Francisco</option>';
+            municipio_options_str  += '<option value="San Francisco El Alto">San Francisco El Alto</option>';
+            municipio_options_str  += '<option value="San Francisco La Unión">San Francisco La Unión</option>';
+            municipio_options_str  += '<option value="San Francisco Zapotitlán">San Francisco Zapotitlán</option>';
+            municipio_options_str  += '<option value="San Gabriel">San Gabriel</option>';
+            municipio_options_str  += '<option value="San Gaspar Ixchil">San Gaspar Ixchil</option>';
+            municipio_options_str  += '<option value="San Idelfonso Ixtahuacán">San Idelfonso Ixtahuacán</option>';
+            municipio_options_str  += '<option value="San Jacinto">San Jacinto</option>';
+            municipio_options_str  += '<option value="San Jerónimo">San Jerónimo</option>';
+            municipio_options_str  += '<option value="San Jorge">San Jorge</option>';
+            municipio_options_str  += '<option value="San José">San José</option>';
+            municipio_options_str  += '<option value="San José Acatempa">San José Acatempa</option>';
+            municipio_options_str  += '<option value="San José Chacayá">San José Chacayá</option>';
+            municipio_options_str  += '<option value="San José El Ídolo">San José El Ídolo</option>';
+            municipio_options_str  += '<option value="San José La Arada">San José La Arada</option>';
+            municipio_options_str  += '<option value="San José Ojetenam">San José Ojetenam</option>';
+            municipio_options_str  += '<option value="San José Pinula">San José Pinula</option>';
+            municipio_options_str  += '<option value="San José Poaquil">San José Poaquil</option>';
+            municipio_options_str  += '<option value="San José del Golfo">San José del Golfo</option>';
+            municipio_options_str  += '<option value="San Juan Atitán">San Juan Atitán</option>';
+            municipio_options_str  += '<option value="San Juan Bautista">San Juan Bautista</option>';
+            municipio_options_str  += '<option value="San Juan Chamelco">San Juan Chamelco</option>';
+            municipio_options_str  += '<option value="San Juan Cotzal">San Juan Cotzal</option>';
+            municipio_options_str  += '<option value="San Juan Ixcoy">San Juan Ixcoy</option>';
+            municipio_options_str  += '<option value="San Juan La Laguna">San Juan La Laguna</option>';
+            municipio_options_str  += '<option value="San Juan Ostuncalco">San Juan Ostuncalco</option>';
+            municipio_options_str  += '<option value="San Juan Sacatepéquez">San Juan Sacatepéquez</option>';
+            municipio_options_str  += '<option value="San Juan Tecuaco">San Juan Tecuaco</option>';
+            municipio_options_str  += '<option value="San Juan la Ermita">San Juan la Ermita</option>';
+            municipio_options_str  += '<option value="San Lorenzo">San Lorenzo</option>';
+            municipio_options_str  += '<option value="San Lucas Sacatepéquez">San Lucas Sacatepéquez</option>';
+            municipio_options_str  += '<option value="San Lucas Tolimán">San Lucas Tolimán</option>';
+            municipio_options_str  += '<option value="San Luis">San Luis</option>';
+            municipio_options_str  += '<option value="San Luis Jilotepeque">San Luis Jilotepeque</option>';
+            municipio_options_str  += '<option value="San Manuel Chaparrón">San Manuel Chaparrón</option>';
+            municipio_options_str  += '<option value="San Marcos">San Marcos</option>';
+            municipio_options_str  += '<option value="San Marcos La Laguna">San Marcos La Laguna</option>';
+            municipio_options_str  += '<option value="San Martín Jilotepeque">San Martín Jilotepeque</option>';
+            municipio_options_str  += '<option value="San Martín Sacatepéquez">San Martín Sacatepéquez</option>';
+            municipio_options_str  += '<option value="San Martín Zapotitlán">San Martín Zapotitlán</option>';
+            municipio_options_str  += '<option value="San Mateo">San Mateo</option>';
+            municipio_options_str  += '<option value="San Mateo Ixtatán">San Mateo Ixtatán</option>';
+            municipio_options_str  += '<option value="San Miguel Acatán">San Miguel Acatán</option>';
+            municipio_options_str  += '<option value="San Miguel Chicaj">San Miguel Chicaj</option>';
+            municipio_options_str  += '<option value="San Miguel Dueñas">San Miguel Dueñas</option>';
+            municipio_options_str  += '<option value="San Miguel Ixtahuacán">San Miguel Ixtahuacán</option>';
+            municipio_options_str  += '<option value="San Miguel Panán">San Miguel Panán</option>';
+            municipio_options_str  += '<option value="San Miguel Sigüila">San Miguel Sigüila</option>';
+            municipio_options_str  += '<option value="San Pablo">San Pablo</option>';
+            municipio_options_str  += '<option value="San Pablo Jocopila">San Pablo Jocopila</option>';
+            municipio_options_str  += '<option value="San Pablo La Laguna">San Pablo La Laguna</option>';
+            municipio_options_str  += '<option value="San Pedro Ayampuc">San Pedro Ayampuc</option>';
+            municipio_options_str  += '<option value="San Pedro Carchá">San Pedro Carchá</option>';
+            municipio_options_str  += '<option value="San Pedro Jocopilas">San Pedro Jocopilas</option>';
+            municipio_options_str  += '<option value="San Pedro La Laguna">San Pedro La Laguna</option>';
+            municipio_options_str  += '<option value="San Pedro Nécta">San Pedro Nécta</option>';
+            municipio_options_str  += '<option value="San Pedro Pinula">San Pedro Pinula</option>';
+            municipio_options_str  += '<option value="San Pedro Sacatepéquez">San Pedro Sacatepéquez</option>';
+            municipio_options_str  += '<option value="San Pedro Soloma">San Pedro Soloma</option>';
+            municipio_options_str  += '<option value="San Rafael La Independencia">San Rafael La Independencia</option>';
+            municipio_options_str  += '<option value="San Rafael Las Flores">San Rafael Las Flores</option>';
+            municipio_options_str  += '<option value="San Rafael Pie de la Cuesta">San Rafael Pie de la Cuesta</option>';
+            municipio_options_str  += '<option value="San Rafael Pétzal">San Rafael Pétzal</option>';
+            municipio_options_str  += '<option value="San Raymundo">San Raymundo</option>';
+            municipio_options_str  += '<option value="San Sebastián">San Sebastián</option>';
+            municipio_options_str  += '<option value="San Sebastián Coatán">San Sebastián Coatán</option>';
+            municipio_options_str  += '<option value="San Sebastián Huehuetenango">San Sebastián Huehuetenango</option>';
+            municipio_options_str  += '<option value="San Vicente Pacaya">San Vicente Pacaya</option>';
+            municipio_options_str  += '<option value="Sanarate">Sanarate</option>';
+            municipio_options_str  += '<option value="Sansare">Sansare</option>';
+            municipio_options_str  += '<option value="Santa Ana">Santa Ana</option>';
+            municipio_options_str  += '<option value="Santa Ana Huista">Santa Ana Huista</option>';
+            municipio_options_str  += '<option value="Santa Apolonia">Santa Apolonia</option>';
+            municipio_options_str  += '<option value="Santa Bárbara">Santa Bárbara</option>';
+            municipio_options_str  += '<option value="Santa Catalina la Tinta">Santa Catalina la Tinta</option>';
+            municipio_options_str  += '<option value="Santa Catarina Barahona">Santa Catarina Barahona</option>';
+            municipio_options_str  += '<option value="Santa Catarina Ixtahuacán">Santa Catarina Ixtahuacán</option>';
+            municipio_options_str  += '<option value="Santa Catarina Mita">Santa Catarina Mita</option>';
+            municipio_options_str  += '<option value="Santa Catarina Palopó">Santa Catarina Palopó</option>';
+            municipio_options_str  += '<option value="Santa Catarina Pinula">Santa Catarina Pinula</option>';
+            municipio_options_str  += '<option value="Santa Clara La Laguna">Santa Clara La Laguna</option>';
+            municipio_options_str  += '<option value="Santa Cruz Balanyá">Santa Cruz Balanyá</option>';
+            municipio_options_str  += '<option value="Santa Cruz La Laguna">Santa Cruz La Laguna</option>';
+            municipio_options_str  += '<option value="Santa Cruz Muluá">Santa Cruz Muluá</option>';
+            municipio_options_str  += '<option value="Santa Cruz Naranjo">Santa Cruz Naranjo</option>';
+            municipio_options_str  += '<option value="Santa Cruz Verapaz">Santa Cruz Verapaz</option>';
+            municipio_options_str  += '<option value="Santa Cruz del Quiché">Santa Cruz del Quiché</option>';
+            municipio_options_str  += '<option value="Santa Eulalia">Santa Eulalia</option>';
+            municipio_options_str  += '<option value="Santa Lucia Cotzulmalguapa">Santa Lucia Cotzulmalguapa</option>';
+            municipio_options_str  += '<option value="Santa Lucía La Reforma">Santa Lucía La Reforma</option>';
+            municipio_options_str  += '<option value="Santa Lucía Milpas Altas">Santa Lucía Milpas Altas</option>';
+            municipio_options_str  += '<option value="Santa Lucía Utatlán">Santa Lucía Utatlán</option>';
+            municipio_options_str  += '<option value="Santa María Chiquimula">Santa María Chiquimula</option>';
+            municipio_options_str  += '<option value="Santa María Ixhuatán">Santa María Ixhuatán</option>';
+            municipio_options_str  += '<option value="Santa María Visitación">Santa María Visitación</option>';
+            municipio_options_str  += '<option value="Santa María de Jesús">Santa María de Jesús</option>';
+            municipio_options_str  += '<option value="Santa Rosa de Lima">Santa Rosa de Lima</option>';
+            municipio_options_str  += '<option value="Santiago Atitlán">Santiago Atitlán</option>';
+            municipio_options_str  += '<option value="Santiago Chimaltenango">Santiago Chimaltenango</option>';
+            municipio_options_str  += '<option value="Santiago Sacatepéquez">Santiago Sacatepéquez</option>';
+            municipio_options_str  += '<option value="Santo Domingo Suchitepéquez">Santo Domingo Suchitepéquez</option>';
+            municipio_options_str  += '<option value="Santo Domingo Xenacoj">Santo Domingo Xenacoj</option>';
+            municipio_options_str  += '<option value="Santo Tomas La Unión">Santo Tomas La Unión</option>';
+            municipio_options_str  += '<option value="Sayaxché">Sayaxché</option>';
+            municipio_options_str  += '<option value="Senahú">Senahú</option>';
+            municipio_options_str  += '<option value="Sibilia">Sibilia</option>';
+            municipio_options_str  += '<option value="Sibinal">Sibinal</option>';
+            municipio_options_str  += '<option value="Sipacapa">Sipacapa</option>';
+            municipio_options_str  += '<option value="Sipacate">Sipacate</option>';
+            municipio_options_str  += '<option value="Siquinalá">Siquinalá</option>';
+            municipio_options_str  += '<option value="Sololá">Sololá</option>';
+            municipio_options_str  += '<option value="Sumpango">Sumpango</option>';
+            municipio_options_str  += '<option value="Tacaná">Tacaná</option>';
+            municipio_options_str  += '<option value="Tactic">Tactic</option>';
+            municipio_options_str  += '<option value="Tajumulco">Tajumulco</option>';
+            municipio_options_str  += '<option value="Tamahú">Tamahú</option>';
+            municipio_options_str  += '<option value="Taxisco">Taxisco</option>';
+            municipio_options_str  += '<option value="Tecpán Guatemala">Tecpán Guatemala</option>';
+            municipio_options_str  += '<option value="Tectitán">Tectitán</option>';
+            municipio_options_str  += '<option value="Teculután">Teculután</option>';
+            municipio_options_str  += '<option value="Tejutla">Tejutla</option>';
+            municipio_options_str  += '<option value="Tiquisate">Tiquisate</option>';
+            municipio_options_str  += '<option value="Todos Santos Cuchumatán">Todos Santos Cuchumatán</option>';
+            municipio_options_str  += '<option value="Totonicapán">Totonicapán</option>';
+            municipio_options_str  += '<option value="Tucurú">Tucurú</option>';
+            municipio_options_str  += '<option value="Unión Cantinil">Unión Cantinil</option>';
+            municipio_options_str  += '<option value="Uspantán">Uspantán</option>';
+            municipio_options_str  += '<option value="Usumatlán">Usumatlán</option>';
+            municipio_options_str  += '<option value="Villa Canales">Villa Canales</option>';
+            municipio_options_str  += '<option value="Villa Nueva">Villa Nueva</option>';
+            municipio_options_str  += '<option value="Yepocapa">Yepocapa</option>';
+            municipio_options_str  += '<option value="Yupiltepeque">Yupiltepeque</option>';
+            municipio_options_str  += '<option value="Zacapa">Zacapa</option>';
+            municipio_options_str  += '<option value="Zacualpa">Zacualpa</option>';
+            municipio_options_str  += '<option value="Zapotitlán">Zapotitlán</option>';
+            municipio_options_str  += '<option value="Zaragoza">Zaragoza</option>';
+            municipio_options_str  += '<option value="Zunil">Zunil</option>';
+            municipio_options_str  += '<option value="Zunilito">Zunilito</option>';
+            sel_municipio.innerHTML = municipio_options_str;
+            div_municipio.appendChild(sel_municipio);
+            var lab_municipio = document.createElement('div');
+            lab_municipio.innerHTML = 'municipio';
+            lab_municipio.className = 'filterlabel';
+            div_municipio.appendChild(lab_municipio);
+            var reset_municipio = document.createElement('div');
+            reset_municipio.innerHTML = 'clear filter';
+            reset_municipio.className = 'filterlabel';
+            reset_municipio.onclick = function() {
+                var options = document.getElementById("sel_municipio").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_municipio.appendChild(reset_municipio);
+        </script>
+    </body>
+</html>
